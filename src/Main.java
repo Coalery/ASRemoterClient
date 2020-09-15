@@ -30,7 +30,7 @@ public class Main {
 	}
 	
 	public void data() {
-		JFrame frame = new JFrame("µ¥ÀÌÅÍ¸¦ ÀÔ·ÂÇÏ¼¼¿ä...");
+		JFrame frame = new JFrame("ë°ì´í„°ë¥¼ ì…ë ¥í•˜ì„¸ìš”...");
 		frame.addWindowListener(new WindowAdapter() {public void windowClosing(WindowEvent event) {System.exit(0);}});
 		
 		frame.setBounds(100, 100, 225, 345);
@@ -52,11 +52,11 @@ public class Main {
 		tf_1.setBounds(12, 89, 185, 31);
 		frame.getContentPane().add(tf_1);
 		
-		tf_1.add("[ ¼­ºñ½º ¼±ÅÃ ]");
-		tf_1.add("ÄÄÇ»ÅÍ ÃÖÀûÈ­");
-		tf_1.add("¹ÙÀÌ·¯½º Ä¡·á");
-		tf_1.add("ÇÁ·Î±×·¥ °íÀå Áö¿ø");
-		tf_1.add("±âÅ¸");
+		tf_1.add("[ ì„œë¹„ìŠ¤ ì„ íƒ ]");
+		tf_1.add("ì»´í“¨í„° ìµœì í™”");
+		tf_1.add("ë°”ì´ëŸ¬ìŠ¤ ì¹˜ë£Œ");
+		tf_1.add("í”„ë¡œê·¸ë¨ ê³ ì¥ ì§€ì›");
+		tf_1.add("ê¸°íƒ€");
 		
 		JLabel label_1 = new JLabel("\uC8FC\uC18C \uC785\uB825", JLabel.CENTER);
 		label_1.setBounds(12, 127, 185, 20);
@@ -87,7 +87,7 @@ public class Main {
 				label_1.setForeground(Color.RED);
 			else
 				label_1.setForeground(Color.BLACK);
-			if(tf_1.getSelectedItem().equals("[ ¼­ºñ½º ¼±ÅÃ ]"))
+			if(tf_1.getSelectedItem().equals("[ ì„œë¹„ìŠ¤ ì„ íƒ ]"))
 				lblNewLabel.setForeground(Color.RED);
 			else
 				lblNewLabel.setForeground(Color.BLACK);
@@ -116,7 +116,7 @@ public class Main {
 	
 	public void start() {
 		try {
-//			String IP = JOptionPane.showInputDialog("¾ÆÀÌÇÇ¸¦ ÀÔ·ÂÇÏ¼¼¿ä");
+//			String IP = JOptionPane.showInputDialog("ì•„ì´í”¼ë¥¼ ì…ë ¥í•˜ì„¸ìš”");
 			
 			Socket s = new Socket(IP, port);
 			Socket s2 = new Socket(IP, port+1);
