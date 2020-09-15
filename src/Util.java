@@ -1,5 +1,4 @@
 import java.awt.AWTException;
-import java.awt.GraphicsEnvironment;
 import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
@@ -9,6 +8,8 @@ import java.io.DataOutputStream;
 import java.io.EOFException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 
 import javax.swing.JFrame;
@@ -18,16 +19,30 @@ import VoiceChatClient.Client;
 
 public class Util {
 	private Robot r;
-	private Socket s;
 	private Client c;
 	
-	public Util(Socket s) throws AWTException {
-		r = new Robot(GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice());
-		this.s  = s;
+	private InputStream dataInputStream;
+	private OutputStream dataOutputStream;
+	
+	public Util(Socket dataSocket){
+		try {
+			r = new Robot();
+		} catch (AWTException e) {
+			e.printStackTrace();
+			return;
+		}
+		
+		try {
+			dataInputStream = dataSocket.getInputStream();
+			dataOutputStream = dataSocket.getOutputStream();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return;
+		}
 	}
 	
 	public void sendDefaultInfo() throws IOException {
-		DataOutputStream out = new DataOutputStream(s.getOutputStream());
+		DataOutputStream out = new DataOutputStream(dataOutputStream);
 		
 		out.writeUTF(Main.name);
 		out.write(Main.service);
@@ -36,7 +51,7 @@ public class Util {
 	}
 	
 	public void process() throws IOException, EOFException {
-		int command = s.getInputStream().read();
+		int command = dataInputStream.read();
 		
 		if(command == 0)
 			mouseMove();
@@ -61,7 +76,7 @@ public class Util {
 		else if(command == 10)
 			System.exit(0);
 		else if(command == 11) {
-			c = new Client("127.0.0.1", 1049);
+			c = new Client(Main.IP, 1049);
 			c.start();
 		} else if(command == 12) {
 			c.killClient();
@@ -69,7 +84,7 @@ public class Util {
 	}
 	
 	public void mouseMove() throws IOException {
-		DataInputStream in = new DataInputStream(s.getInputStream());
+		DataInputStream in = new DataInputStream(dataInputStream);
 		
 		int x = in.readInt();
 		int y = in.readInt();
@@ -78,7 +93,7 @@ public class Util {
 	}
 	
 	public void mouseClick() throws IOException {
-		DataInputStream in = new DataInputStream(s.getInputStream());
+		DataInputStream in = new DataInputStream(dataInputStream);
 		
 		int mask = in.readInt();
 		
@@ -86,7 +101,7 @@ public class Util {
 	}
 	
 	public void mouseRelease() throws IOException {
-		DataInputStream in = new DataInputStream(s.getInputStream());
+		DataInputStream in = new DataInputStream(dataInputStream);
 		
 		int mask = in.readInt();
 		
@@ -94,7 +109,7 @@ public class Util {
 	}
 	
 	public void mouseWheel() throws IOException {
-		DataInputStream in = new DataInputStream(s.getInputStream());
+		DataInputStream in = new DataInputStream(dataInputStream);
 		
 		int wheel = in.readInt();
 		
@@ -102,7 +117,7 @@ public class Util {
 	}
 	
 	public void keyPressed() throws IOException {
-		DataInputStream in = new DataInputStream(s.getInputStream());
+		DataInputStream in = new DataInputStream(dataInputStream);
 		
 		int keycode = in.readInt();
 		
@@ -110,7 +125,7 @@ public class Util {
 	}
 	
 	public void keyReleased() throws IOException {
-		DataInputStream in = new DataInputStream(s.getInputStream());
+		DataInputStream in = new DataInputStream(dataInputStream);
 		
 		int keycode = in.readInt();
 		
@@ -118,9 +133,9 @@ public class Util {
 	}
 	
 	public void showMessage() throws IOException {
-		DataInputStream in = new DataInputStream(s.getInputStream());
+		DataInputStream in = new DataInputStream(dataInputStream);
 		
-		JFrame tmp = new JFrame("¸Þ¼¼Áö µµÂø");
+		JFrame tmp = new JFrame("ï¿½Þ¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
 		JLabel l = new JLabel("", JLabel.CENTER);
 		
 		l.setText(in.readUTF());
@@ -149,7 +164,7 @@ public class Util {
 	}
 	
 	public void setSize() throws IOException {
-		DataInputStream in = new DataInputStream(s.getInputStream());
+		DataInputStream in = new DataInputStream(dataInputStream);
 		Threads.setC(in.readInt(), in.readInt(), in.readInt(), in.readInt());
 	}
 	
@@ -160,7 +175,7 @@ public class Util {
 	public void recieveFile() throws IOException {
 		String fileName = "";
 		
-		DataInputStream dis = new DataInputStream(s.getInputStream());
+		DataInputStream dis = new DataInputStream(dataInputStream);
 		
 		fileName = dis.readUTF();
 		FileOutputStream fos = new FileOutputStream(Main.FILE_RECIEVE_PATH + "\\" + fileName);
@@ -177,8 +192,5 @@ public class Util {
 			fos.write(buffer, 0, read);
 		}
 		fos.close();
-		
-		s = null;
-		s = new Socket(Main.IP, Main.port);
 	}
 }

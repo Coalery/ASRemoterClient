@@ -90,17 +90,17 @@ public class Threads {
 	}
 	
 	public static class Answer extends Thread {
-		Util u;
+		Util util;
 		
 		public Answer(Socket s) {
-			try {u = new Util(s);} catch (AWTException e) {e.printStackTrace();}
-			try {u.sendDefaultInfo();} catch (IOException e) {e.printStackTrace();}
+			util = new Util(s);
+			try {util.sendDefaultInfo();} catch (IOException e) {e.printStackTrace();}
 		}
 		
 		@Override
 		public void run() {
 			try {while(true) {try {
-				u.process();
+				util.process();
 			} catch (EOFException eo) {eo.printStackTrace();}}} catch (IOException e) {System.exit(0);} 
 		}
 	}
