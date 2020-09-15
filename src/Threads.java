@@ -6,6 +6,7 @@ import java.awt.Robot;
 import java.awt.image.BufferedImage;
 import java.io.EOFException;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.Socket;
 
 import javax.imageio.ImageIO;
@@ -53,39 +54,38 @@ public class Threads {
 	}
 	
 	public static class SendScreenThread extends Thread {
+		private Socket scrSocket;
+		private OutputStream scrOutputStream;
 		
-		private Socket s;
-		
-		public SendScreenThread(Socket s) {
-			this.s = s;
+		public SendScreenThread(Socket scrSocket) {
+			this.scrSocket = scrSocket;
+			
+			try {
+				scrOutputStream = scrSocket.getOutputStream();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		public void sendScreen() {
 			try {
-			BufferedImage bi = new Robot().createScreenCapture(new Rectangle(captureLocX, captureLocY, captureWidth, captureHeight));
-			ImageIO.write(bi, "png", s.getOutputStream());
+				BufferedImage bi = new Robot().createScreenCapture(new Rectangle(captureLocX, captureLocY, captureWidth, captureHeight));
+				ImageIO.write(bi, "png", scrOutputStream);
 			} catch (IOException | AWTException e) {}
 		}
 		
 		@Override
 		public void run() {
-			int counter = 0;
-			
 			try {
-			while(true) {
-				sendScreen();
-				
-				if(counter++ > 5) {
-					s.close();
-					s = null;
-					s = new Socket(Main.IP, Main.port+1);
-					counter = 0;
+				while(true) {
+					sendScreen();
+					try { Thread.sleep(250); } catch (InterruptedException e) {e.printStackTrace();}
 				}
-				
-				try { Thread.sleep(500); } catch (InterruptedException e) {e.printStackTrace();}
-			}
 			} catch (Exception e) {e.printStackTrace();}
-			System.out.println("Thread Stop.");
+			
+			if(scrSocket != null && !scrSocket.isClosed()) {
+				try { scrSocket.close(); } catch(IOException e) { e.printStackTrace(); }			
+			}
 		}
 	}
 	

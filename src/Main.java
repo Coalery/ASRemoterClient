@@ -17,7 +17,7 @@ import javax.swing.SwingConstants;
 public class Main {
 	
 	public static final String FILE_RECIEVE_PATH = "C:\\Users\\" + System.getProperty("user.name") + "\\Desktop";
-	public static final String IP = "192.168.200.180";
+	public static final String IP = "192.168.0.106";
 	public static final int port = 5678;
 	
 	public static String name = "";
@@ -30,94 +30,87 @@ public class Main {
 	}
 	
 	public void data() {
-		JFrame frame = new JFrame("데이터를 입력하세요...");
-		frame.addWindowListener(new WindowAdapter() {public void windowClosing(WindowEvent event) {System.exit(0);}});
+		JFrame dataFrame = new JFrame("데이터를 입력하세요...");
+		dataFrame.addWindowListener(new WindowAdapter() {public void windowClosing(WindowEvent event) {System.exit(0);}});
 		
-		frame.setBounds(100, 100, 225, 345);
-		frame.getContentPane().setLayout(null);
+		dataFrame.setBounds(100, 100, 225, 345);
+		dataFrame.getContentPane().setLayout(null);
 		
-		JLabel label = new JLabel("\uC774\uB984 \uC785\uB825", JLabel.CENTER);
-		label.setBounds(12, 10, 185, 15);
-		frame.getContentPane().add(label);
 		
-		JTextField tf = new JTextField();
-		tf.setBounds(12, 29, 185, 31);
-		frame.getContentPane().add(tf);
+		JLabel nameLabel = new JLabel("이름 입력", JLabel.CENTER);
+		nameLabel.setBounds(12, 10, 185, 15);
+		dataFrame.getContentPane().add(nameLabel);
 		
-		JLabel lblNewLabel = new JLabel("\uBC1B\uC744 \uC11C\uBE44\uC2A4 \uC785\uB825", JLabel.CENTER);
-		lblNewLabel.setBounds(12, 70, 185, 20);
-		frame.getContentPane().add(lblNewLabel);
+		JTextField nameTextField = new JTextField();
+		nameTextField.setBounds(12, 29, 185, 31);
+		dataFrame.getContentPane().add(nameTextField);
 		
-		Choice tf_1 = new Choice();
-		tf_1.setBounds(12, 89, 185, 31);
-		frame.getContentPane().add(tf_1);
 		
-		tf_1.add("[ 서비스 선택 ]");
-		tf_1.add("컴퓨터 최적화");
-		tf_1.add("바이러스 치료");
-		tf_1.add("프로그램 고장 지원");
-		tf_1.add("기타");
+		JLabel serviceLabel = new JLabel("받을 서비스 입력", JLabel.CENTER);
+		serviceLabel.setBounds(12, 70, 185, 20);
+		dataFrame.getContentPane().add(serviceLabel);
 		
-		JLabel label_1 = new JLabel("\uC8FC\uC18C \uC785\uB825", JLabel.CENTER);
-		label_1.setBounds(12, 127, 185, 20);
-		frame.getContentPane().add(label_1);
+		Choice serviceChoice = new Choice();
+		serviceChoice.setBounds(12, 89, 185, 31);
+		dataFrame.getContentPane().add(serviceChoice);
 		
-		JTextField tf_2 = new JTextField();
-		tf_2.setBounds(12, 150, 185, 31);
-		frame.getContentPane().add(tf_2);
+		serviceChoice.add("[ Service Select ]");
+		serviceChoice.add("Optimizing Computer");
+		serviceChoice.add("Virus");
+		serviceChoice.add("Fix Program");
+		serviceChoice.add("Etc.");
 		
-		JButton btnNewButton = new JButton("\uC785\uB825 \uC644\uB8CC");
-		btnNewButton.setBounds(61, 262, 97, 31);
-		frame.getContentPane().add(btnNewButton);
 		
-		JLabel label_2 = new JLabel("\uC804\uD654\uBC88\uD638 \uC785\uB825", SwingConstants.CENTER);
-		label_2.setBounds(12, 191, 185, 20);
-		frame.getContentPane().add(label_2);
+		JLabel addressLabel = new JLabel("주소 입력", JLabel.CENTER);
+		addressLabel.setBounds(12, 127, 185, 20);
+		dataFrame.getContentPane().add(addressLabel);
 		
-		JTextField tf_3 = new JTextField();
-		tf_3.setBounds(12, 214, 185, 31);
-		frame.getContentPane().add(tf_3);
+		JTextField addressTextField = new JTextField();
+		addressTextField.setBounds(12, 150, 185, 31);
+		dataFrame.getContentPane().add(addressTextField);
 		
-		btnNewButton.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent event) {
-			if(tf_3.getText().length() == 0)
-				label_2.setForeground(Color.RED);
-			else
-				label_2.setForeground(Color.BLACK);
-			if(tf_2.getText().length() == 0)
-				label_1.setForeground(Color.RED);
-			else
-				label_1.setForeground(Color.BLACK);
-			if(tf_1.getSelectedItem().equals("[ 서비스 선택 ]"))
-				lblNewLabel.setForeground(Color.RED);
-			else
-				lblNewLabel.setForeground(Color.BLACK);
-			if(tf.getText().length() == 0)
-				label.setForeground(Color.RED);
-			else
-				label.setForeground(Color.BLACK);
-			if(label.getForeground() == Color.RED || lblNewLabel.getForeground() == Color.RED || label_1.getForeground() == Color.RED || label_2.getForeground() == Color.RED) {
+		
+		JLabel phoneLabel = new JLabel("전화번호 입력", SwingConstants.CENTER);
+		phoneLabel.setBounds(12, 191, 185, 20);
+		dataFrame.getContentPane().add(phoneLabel);
+		
+		JTextField phoneTextField = new JTextField();
+		phoneTextField.setBounds(12, 214, 185, 31);
+		dataFrame.getContentPane().add(phoneTextField);
+		
+		
+		JButton btnComplete = new JButton("입력 완료");
+		btnComplete.setBounds(61, 262, 97, 31);
+		dataFrame.getContentPane().add(btnComplete);
+		
+		btnComplete.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent event) {
+			nameLabel.setForeground(nameTextField.getText().length() == 0 ? Color.RED : Color.BLACK);
+			serviceLabel.setForeground(serviceChoice.getSelectedIndex() == 0 ? Color.RED : Color.BLACK);
+			addressLabel.setForeground(addressTextField.getText().length() == 0 ? Color.RED : Color.BLACK);
+			phoneLabel.setForeground(phoneTextField.getText().length() == 0 ? Color.RED : Color.BLACK);
+			
+			if(nameTextField.getForeground() == Color.RED || serviceLabel.getForeground() == Color.RED || addressLabel.getForeground() == Color.RED || phoneLabel.getForeground() == Color.RED) {
 				Toolkit.getDefaultToolkit().beep();
 				return;
-			}
-			name = tf.getText();
-			service = tf_1.getSelectedIndex();
-			address = tf_2.getText();
-			phonenum = tf_3.getText();
+			} // Invalid Value
 			
-			frame.setVisible(false);
-			frame.dispose();
+			name = nameTextField.getText();
+			service = serviceChoice.getSelectedIndex();
+			address = addressTextField.getText();
+			phonenum = phoneTextField.getText();
+			
+			dataFrame.setVisible(false);
+			dataFrame.dispose();
 			
 			start();
 		}});
 		
-		frame.setResizable(false);
-		frame.setVisible(true);
+		dataFrame.setResizable(false);
+		dataFrame.setVisible(true);
 	}
 	
 	public void start() {
 		try {
-//			String IP = JOptionPane.showInputDialog("아이피를 입력하세요");
-			
 			Socket s = new Socket(IP, port);
 			Socket s2 = new Socket(IP, port+1);
 			Threads.setC(0, 0, Toolkit.getDefaultToolkit().getScreenSize());
