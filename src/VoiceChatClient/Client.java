@@ -72,16 +72,5 @@ public class Client extends Thread {
             System.out.println("client err " + e.toString());
         }
     }
-    
-    @SuppressWarnings("deprecation")
-    public void killClient() {
-    	ArrayList<AudioChannel> kill = new ArrayList<AudioChannel>();
-    	for(AudioChannel c : chs) if(c.canKill()) kill.add(c);
-    	for(AudioChannel c : kill) {c.closeAndKill(); chs.remove(c);}
-    	
-    	try { s.close(); } catch (IOException e) { s = null; }
-    	st.stop();
-    	stop();
-    }
 }
  
