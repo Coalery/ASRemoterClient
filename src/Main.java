@@ -54,11 +54,11 @@ public class Main {
 		serviceChoice.setBounds(12, 89, 185, 31);
 		dataFrame.getContentPane().add(serviceChoice);
 		
-		serviceChoice.add("[ Service Select ]");
-		serviceChoice.add("Optimizing Computer");
-		serviceChoice.add("Virus");
-		serviceChoice.add("Fix Program");
-		serviceChoice.add("Etc.");
+		serviceChoice.add("[ 서비스 선택 ]");
+		serviceChoice.add("컴퓨터 최적화");
+		serviceChoice.add("바이러스 치료");
+		serviceChoice.add("프로그램 고장 지원");
+		serviceChoice.add("기타");
 		
 		
 		JLabel addressLabel = new JLabel("주소 입력", JLabel.CENTER);
